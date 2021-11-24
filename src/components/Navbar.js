@@ -41,7 +41,7 @@ const Navbar = (props) => {
             </li>
             <li className="nav-item">
               <a
-                href="https://api.aniapi.com/v1/oauth?response_type=token&client_id=0745e82d-02ae-429f-843e-5bf8c47b3334&redirect_uri=http://localhost:3000"
+                href="https://api.aniapi.com/v1/oauth?response_type=token&client_id=0745e82d-02ae-429f-843e-5bf8c47b3334&redirect_uri=https://anime2222.herokuapp.com/"
                 className="nav-link"
                 style={{ color: "black", fontSize: "20px" }}
               >
