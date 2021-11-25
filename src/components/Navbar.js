@@ -35,6 +35,7 @@ const Navbar = (props) => {
                   aria-label="Search"
                   name="search"
                   value={props.input}
+                  autoComplete="off"
                   onChange={(e) => props.handleInput(e)}
                 ></input>
               </form>
@@ -42,7 +43,7 @@ const Navbar = (props) => {
             <li className="nav-item">
               {" "}
               <button className="nav-link" onClick={props.handleSearch}>
-                Search
+                <i class="fa fa-search" aria-hidden="true"></i>
               </button>{" "}
             </li>
             <li className="nav-item">

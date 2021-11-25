@@ -40,8 +40,15 @@ export default class Home extends React.Component {
     this.setState({ search: this.state.input });
     //alert("hi");
   };
-  changePage = () => {
-    this.setState({ currentPage: this.state.currentPage + 1 });
+  prevPage = () => {
+    if (this.state.currentPage > 1) {
+      this.setState({ currentPage: this.state.currentPage - 1 });
+    }
+  };
+  nextPage = () => {
+    if (this.state.currentPage <= this.state.totalPage) {
+      this.setState({ currentPage: this.state.currentPage + 1 });
+    }
   };
 
   fetchApi = async () => {
@@ -60,7 +67,8 @@ export default class Home extends React.Component {
         .get("https://api.aniapi.com/v1/anime?title=" + this.state.search)
         .then((res) => {
           this.setState({ data: res.data.data.documents });
-          console.log(this.state.data);
+          this.setState({ totalPage: res.data.data.last_page });
+          // console.log(this.state.data);
         });
     }
   };
@@ -115,41 +123,26 @@ export default class Home extends React.Component {
           ></Route>
         </Routes>
         <br />
-        <div className="container">
+        <div className="container-fluid jusitfy-content">
           <div className="row">
-            <div className="col-md-4"></div>
+            <div className="col-md-5"></div>
             <div className="col-md-4">
               <nav aria-label="Page navigation example">
                 <ul class="pagination">
-                  <li class="page-item">
-                    <p class="page-link" onClick={this.changePage}>
-                      Previous
-                    </p>
+                  <li class="page-item" onClick={this.prevPage}>
+                    <p class="page-link">Previous</p>
                   </li>
                   <li class="page-item">
-                    <a class="page-link" href="#">
-                      1
-                    </a>
+                    <a class="page-link active">{this.state.currentPage}</a>
                   </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
-                      2
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
-                      3
-                    </a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
-                      Next
-                    </a>
+
+                  <li class="page-item" onClick={this.nextPage}>
+                    <p class="page-link">Next</p>
                   </li>
                 </ul>
               </nav>
             </div>
-            <div className="col-md-4"></div>
+            <div className="col-md-3"></div>
           </div>
         </div>
       </BrowserRouter>
