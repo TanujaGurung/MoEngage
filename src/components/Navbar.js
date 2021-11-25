@@ -34,10 +34,16 @@ const Navbar = (props) => {
                   placeholder="Search Products"
                   aria-label="Search"
                   name="search"
-                  value={props.search}
-                  onChange={(e) => props.handleSearch(e)}
+                  value={props.input}
+                  onChange={(e) => props.handleInput(e)}
                 ></input>
               </form>
+            </li>
+            <li className="nav-item">
+              {" "}
+              <button className="nav-link" onClick={props.handleSearch}>
+                Search
+              </button>{" "}
             </li>
             <li className="nav-item">
               <a

@@ -8,14 +8,20 @@ import Details from "./Details";
 export default class Home extends React.Component {
   state = {
     search: "",
+    input: "",
     data: [],
     selectedId: 0,
+    currentPage: 1,
+    totalPage: 1,
   };
   componentDidMount() {
     this.fetchApi();
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.search !== this.state.search) {
+      this.fetchApi();
+    }
+    if (prevState.currentPage !== this.state.currentPage) {
       this.fetchApi();
     }
   }
@@ -25,18 +31,28 @@ export default class Home extends React.Component {
     this.setState({ selectedId: id });
     // console.log(this.state.selectedId);
   };
-  handleSearch = (e) => {
+  handleInput = (e) => {
     e.preventDefault();
-    this.setState({ search: e.target.value });
+    this.setState({ input: e.target.value });
     //alert("hi");
+  };
+  handleSearch = () => {
+    this.setState({ search: this.state.input });
+    //alert("hi");
+  };
+  changePage = () => {
+    this.setState({ currentPage: this.state.currentPage + 1 });
   };
 
   fetchApi = async () => {
     if (this.state.search === "") {
       await axios
-        .get("https://api.aniapi.com/v1/random/anime/40")
+        .get(
+          `https://api.aniapi.com/v1/anime?page=${this.state.currentPage}&per_page=30`
+        )
         .then((res) => {
-          this.setState({ data: res.data.data });
+          this.setState({ data: res.data.data.documents });
+          this.setState({ totalPage: res.data.data.last_page });
           console.log(this.state.data);
         });
     } else {
@@ -52,11 +68,15 @@ export default class Home extends React.Component {
   render() {
     const { data, search } = this.state;
     //console.log(search);
-    console.log(document.location.hash);
 
     return (
       <BrowserRouter>
-        <Navbar search={search} handleSearch={this.handleSearch} />
+        <Navbar
+          search={search}
+          handleSearch={this.handleSearch}
+          handleInput={this.handleInput}
+          input={this.state.input}
+        />
         <Routes>
           <Route
             path="/"
@@ -94,6 +114,44 @@ export default class Home extends React.Component {
             element={<Details id={this.state.selectedId} />}
           ></Route>
         </Routes>
+        <br />
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4"></div>
+            <div className="col-md-4">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <p class="page-link" onClick={this.changePage}>
+                      Previous
+                    </p>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      1
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      2
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      3
+                    </a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      Next
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div className="col-md-4"></div>
+          </div>
+        </div>
       </BrowserRouter>
     );
   }
