@@ -4,7 +4,7 @@ import "./App.css";
 
 function App() {
   useEffect(() => {
-    document.title = "anime world - find any anime here";
+    document.title = "Anime World - find any anime here";
   }, []);
   return (
     <div className="App">
